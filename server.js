@@ -12,7 +12,6 @@ connectDB();
 const port = process.env.PORT || 5000;
 // Import routes
 const auth = require('./routes/auth');
-const bootcamps = require('./routes/bootcamps');
 // Create app from expreess
 const app = express();
 // Middlewares
@@ -24,7 +23,6 @@ if (process.env.NODE_ENV === 'development') {
 }
 // Routes
 app.use('/api/v1/auth', auth);
-app.use('/api/v1/bootcamps', bootcamps);
 // Listen
 const server = app.listen(
 	port,
