@@ -29,7 +29,8 @@ app.use('/api/v1/bootcamps', bootcamps);
 const server = app.listen(
 	port,
 	console.log(
-		`Server started in ${process.env.NODE_ENV} mode on port ${port}`.yellow.bold
+		`Auth server started in ${process.env.NODE_ENV} mode on port ${port}`.yellow
+			.bold
 	)
 );
 // Handle uhandled promise rejection
