@@ -7,12 +7,19 @@ exports.signUp = async (req, res, next) => {
 	// Get request values after JOI validation
 	const { name, email, password } = req.value.body;
 	// Ensure uniqueness
-	const foundUser = await User.findOne({ email });
+	const foundUser = await User.findOne({ 'local.email': email });
 	if (foundUser) {
 		return res.status(401).json({ msg: 'User already exists' });
 	}
 	// Create new user
-	const newUser = new User({ name, email, password });
+	const newUser = new User({
+		method: 'local',
+		name,
+		local: {
+			email,
+			password
+		}
+	});
 	await newUser.save();
 	// Send token
 	res.status(201).json({ token: newUser.getSignedJwtToken() });
@@ -27,6 +34,6 @@ exports.signIn = async (req, res, next) => {
 //  @route  GET /api/v1/auth/secret
 //  @access Private
 exports.secret = async (req, res, next) => {
-	const { id, name, email } = req.user;
-	res.status(200).send({ user: { id, name, email } });
+	const { id, name } = req.user;
+	res.status(200).send({ user: { id, name } });
 };

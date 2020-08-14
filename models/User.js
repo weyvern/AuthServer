@@ -4,23 +4,46 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 // Schema
 const UserSchema = new mongoose.Schema({
-	name: { type: String, required: [true, 'Name is required'] },
-	email: {
+	method: {
 		type: String,
-		required: [true, 'Email is required'],
-		unique: true,
-		lowercase: true
+		enum: ['local', 'google', 'facebook'],
+		required: true
 	},
-	password: { type: String, required: [true, 'Password is required'] }
+	local: {
+		email: {
+			type: String,
+			lowercase: true
+		},
+		password: { type: String }
+	},
+	google: {
+		id: {
+			type: String
+		},
+		email: {
+			type: String,
+			lowercase: true
+		}
+	},
+	facebook: {
+		id: {
+			type: String
+		},
+		email: {
+			type: String,
+			lowercase: true
+		}
+	},
+	name: { type: String, required: [true, 'Name is required'] }
 });
 // Model methods
 // Encrypt password using bcrypt
 UserSchema.pre('save', async function (next) {
-	if (!this.isModified('password')) {
+	if (this.method !== 'local') {
 		return next();
 	}
 	const salt = await bcrypt.genSalt(10);
-	this.password = await bcrypt.hash(this.password, salt);
+	this.local.password = await bcrypt.hash(this.local.password, salt);
 	return next();
 });
 // Sign JWT and return
@@ -29,7 +52,7 @@ UserSchema.methods.getSignedJwtToken = function () {
 };
 // Match user entered password to hashed password in database
 UserSchema.methods.matchPassword = async function (password) {
-	return await bcrypt.compare(password, this.password);
+	return await bcrypt.compare(password, this.local.password);
 };
 // Export module
 module.exports = mongoose.model('User', UserSchema);
