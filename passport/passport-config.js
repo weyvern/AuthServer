@@ -48,7 +48,6 @@ passport.use(
 		async (accessToken, refreshToken, profile, done) => {
 			const user = await User.findOne({ 'google.id': profile.id });
 			if (user) return done(null, user);
-			console.log(profile.emails[0].value);
 			const newUser = new User({
 				method: 'google',
 				name: profile.displayName,
@@ -57,7 +56,6 @@ passport.use(
 					email: profile.emails[0].value
 				}
 			});
-			console.log(newUser);
 			await newUser.save();
 			done(null, newUser);
 		}
