@@ -50,7 +50,8 @@ passport.use(
 			if (user) return done(null, user);
 			const newUser = new User({
 				method: 'google',
-				name: profile.displayName,
+				name: profile.name.givenName,
+				lastName: profile.name.familyName,
 				google: {
 					id: profile.id,
 					email: profile.emails[0].value

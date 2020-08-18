@@ -34,7 +34,14 @@ const UserSchema = new mongoose.Schema({
 			lowercase: true
 		}
 	},
-	name: { type: String, required: [true, 'Name is required'] }
+	name: { type: String, required: [true, 'Name is required'] },
+	lastName: { type: String, required: [true, 'Lastname is required'] },
+	status: {
+		type: String,
+		enum: ['active', 'inactive', 'disabled'],
+		required: true,
+		default: 'inactive'
+	}
 });
 // Model methods
 // Encrypt password using bcrypt

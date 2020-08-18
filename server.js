@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const colors = require('colors');
 const connectDB = require('./config/db');
+const errorHandler = require('./middleware/error');
 // Define config file
 dotenv.config({ path: './config/config.env' });
 // Connect to DB
@@ -14,7 +15,7 @@ const port = process.env.PORT || 5000;
 const auth = require('./routes/auth');
 // Create app from expreess
 const app = express();
-// Middlewares
+// **** Middlewares ***
 // Parse request body
 app.use(express.json());
 // Logger for dev mode
@@ -23,6 +24,8 @@ if (process.env.NODE_ENV === 'development') {
 }
 // Routes
 app.use('/api/v1/auth', auth);
+// Error handler
+app.use(errorHandler);
 // Listen
 const server = app.listen(
 	port,

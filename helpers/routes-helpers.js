@@ -16,6 +16,7 @@ module.exports = {
 	schemas: {
 		authSchema: joi.object().keys({
 			name: joi.string().required(),
+			lastName: joi.string().required(),
 			email: joi
 				.string()
 				.email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
