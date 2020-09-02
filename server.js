@@ -19,16 +19,12 @@ const app = express();
 // **** Middlewares ***
 // Parse request body
 app.use(express.json());
-// Cors
-app.use(
-	cors({
-		origin: 'http://localhost:3000'
-	})
-);
 // Logger for dev mode
 if (process.env.NODE_ENV === 'development') {
 	app.use(morgan('dev'));
 }
+// Cors
+app.use(cors());
 // Routes
 app.use('/api/v1/auth', auth);
 // Error handler
