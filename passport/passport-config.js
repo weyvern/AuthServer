@@ -30,6 +30,7 @@ passport.use(
 		},
 		async (email, password, done) => {
 			const user = await User.findOne({ 'local.email': email });
+			console.log(user);
 			if (!user) return done(null, false);
 			const isMatch = await user.matchPassword(password);
 			if (!isMatch) return done(null, false);
